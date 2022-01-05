@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Film Ara</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-searchbar [(ngModel)]="searchTerm" placeholder="Aranacak film" inputmode="search"
+    (ionChange)="searchChanged($event)">
+
+  </ion-searchbar>
+
+  <ion-item>
+    <ion-label>Arama Tipi</ion-label>
+
+    <ion-select [(ngModel)]="type" (ionChange)="searchChanged($event)" okText="Tamam" cancelText="İptal">
+      <ion-select-option value="">Hepsi</ion-select-option>
+      <ion-select-option value="movie">Film</ion-select-option>
+      <ion-select-option value="series">Seriler</ion-select-option>
+      <ion-select-option value="episone">Bölüm</ion-select-option>
+      <ion-select-option value="game">Oyun</ion-select-option>
+
+    </ion-select>
+  </ion-item>
+
+  <ion-list>
+    <ion-item button *ngFor="let item of (results | async)" [routerLink]="['/','movies', item.imdbID]">
+      <ion-avatar slot="start">
+        <img [src]="item.Poster" *ngIf="item.Poster !='N/A'" />
+      </ion-avatar>
+      <ion-label text-wrap>
+        <h3>
+          {{item.Title}}
+          {{item.Year}}
+        </h3>
+      </ion-label>
+      <ion-icon slot="end" name="videocam-outline" *ngIf="item.Type=='movie'"></ion-icon>
+      <ion-icon slot="end" name="tv-outline" *ngIf="item.Type=='tv'"></ion-icon>
+      <ion-icon slot="end" name="game-controller-outline" *ngIf="item.Type=='game'"></ion-icon>
+      <ion-icon slot="end" *ngIf="item.Type=='series'" name="list-circle-outline"></ion-icon>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
